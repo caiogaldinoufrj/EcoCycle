@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EcoCycle — Interactive Pitch Companion</title>
+<style>
+:root{ color-scheme: light;
+  --forest:#1E6B3A; --green:#27AE60; --navy:#1A5276; --blue:#2E86C1;
+  --gold:#C77F0A; --purple:#6C3483; --ink:#1A1A1A; --gray:#6B7280;
+  --cream:#F5F7F4; --line:#E2E8E0; --card:#FFFFFF; }
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;line-height:1.5;}
+.wrap{max-width:1000px;margin:0 auto;padding:22px 20px 60px;}
+.kick{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--green);text-transform:uppercase;}
+h1{font-family:Georgia,serif;font-size:30px;margin:4px 0 2px;color:var(--ink);}
+.sub{color:var(--gray);font-size:14px;margin-bottom:22px;}
+.tabs{display:flex;gap:8px;margin:18px 0 16px;flex-wrap:wrap;}
+.tab{padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:#fff;
+  cursor:pointer;font-weight:600;font-size:14px;color:var(--gray);}
+.tab.active{background:var(--forest);color:#fff;border-color:var(--forest);}
+.panel{display:none;} .panel.active{display:block;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,.05);padding:18px 20px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+.ctrl{margin:14px 0;}
+.ctrl label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px;}
+.ctrl label b{color:var(--forest);}
+input[type=range]{width:100%;accent-color:var(--green);height:4px;}
+.outs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px;}
+.out{background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:12px 14px;}
+.out .n{font-family:Georgia,serif;font-size:26px;font-weight:700;}
+.out .l{font-size:11.5px;color:var(--gray);margin-top:2px;}
+.hl{border:1px solid var(--green);background:#EFF6F0;}
+.note{font-size:12px;color:var(--gray);font-style:italic;margin-top:14px;}
+.flow{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+.step{flex:1;min-width:150px;background:#fff;border:1px solid var(--line);border-radius:10px;
+  padding:14px;cursor:pointer;transition:.15s;border-top:4px solid var(--green);}
+.step:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,.08);}
+.step.sel{background:#EFF6F0;border-color:var(--green);}
+.step .s{font-size:11px;color:var(--gray);font-weight:700;}
+.step .t{font-weight:700;color:var(--forest);margin:3px 0;font-size:14px;}
+.step .d{font-size:12px;color:var(--gray);}
+.detail{margin-top:16px;background:#fff;border:1px solid var(--line);border-left:5px solid var(--green);
+  border-radius:10px;padding:16px 18px;min-height:90px;}
+.detail h3{margin:0 0 6px;color:var(--forest);font-family:Georgia,serif;}
+.badge{display:inline-block;background:#F4ECF7;color:var(--purple);border:1px solid var(--purple);
+  border-radius:999px;font-size:11px;font-weight:700;padding:2px 9px;margin-left:6px;}
+.foot{margin-top:26px;font-size:11px;color:var(--gray);text-align:center;}
+.split{display:flex;align-items:center;gap:14px;margin-top:10px;flex-wrap:wrap}
+.bar{height:18px;border-radius:6px;display:flex;overflow:hidden;flex:1;min-width:240px;border:1px solid var(--line)}
+.bar span{display:block;height:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kick">EcoCycle · Interactive Pitch Companion</div>
+  <h1>Move catadores up the value chain</h1>
+  <div class="sub">Pavuna-Meriti basin, Rio de Janeiro · 2026 Poverty Alleviation Challenge. Figures are illustrative estimates to be validated in the pilot.</div>
+
+  <div class="tabs">
+    <div class="tab active" data-p="calc">Unit economics</div>
+    <div class="tab" data-p="flow">How it works</div>
+  </div>
+
+  <!-- CALCULATOR -->
+  <div class="panel active" id="calc">
+    <div class="grid2">
+      <div class="card">
+        <div style="font-weight:700;color:var(--navy);margin-bottom:6px;">Pilot assumptions</div>
+        <div class="ctrl"><label>Establishments enrolled <b id="vEst">200</b></label>
+          <input type="range" id="est" min="50" max="800" step="10" value="200"></div>
+        <div class="ctrl"><label>UCO per establishment (L / month) <b id="vL">25</b></label>
+          <input type="range" id="lper" min="10" max="60" step="1" value="25"></div>
+        <div class="ctrl"><label>Realized price (R$ / L) <b id="vP">1.20</b></label>
+          <input type="range" id="price" min="0.6" max="2.5" step="0.05" value="1.20"></div>
+        <div class="ctrl"><label>Share to education fund <b id="vF">10%</b></label>
+          <input type="range" id="fund" min="0" max="25" step="1" value="10"></div>
+        <div class="ctrl"><label>Cooperative members in pilot <b id="vM">6</b></label>
+          <input type="range" id="mem" min="3" max="20" step="1" value="6"></div>
+        <div class="note">Operations is held at a fixed 5% of revenue. Baseline catador income assumed R$1,111/month (Southeast average).</div>
+      </div>
+      <div class="card">
+        <div style="font-weight:700;color:var(--navy);margin-bottom:10px;">Monthly results</div>
+        <div class="outs">
+          <div class="out"><div class="n" id="oVol" style="color:var(--green)">—</div><div class="l">litres collected / month</div></div>
+          <div class="out"><div class="n" id="oRev" style="color:var(--gold)">—</div><div class="l">gross revenue / month</div></div>
+          <div class="out hl"><div class="n" id="oMem" style="color:var(--forest)">—</div><div class="l">added income / member / month</div></div>
+          <div class="out"><div class="n" id="oFund" style="color:var(--blue)">—</div><div class="l">to education fund / month</div></div>
+        </div>
+        <div style="margin-top:14px;font-size:13px;font-weight:600;color:var(--ink)">Income per member vs current baseline</div>
+        <div class="split">
+          <div class="bar"><span id="bBase" style="background:#C9D6CE"></span><span id="bAdd" style="background:var(--green)"></span></div>
+        </div>
+        <div id="cmp" style="font-size:12px;color:var(--gray);margin-top:6px"></div>
+        <div style="margin-top:14px;font-size:12px;color:var(--gray)">Annualized: <b id="oAnnualV">—</b> L · <b id="oAnnualR">—</b> revenue</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px;background:#EFF6F0;border-color:var(--green)">
+      <b style="color:var(--forest)">Why it works:</b> demand is not the risk, supply is. UCO sells into a market whose demand grew +700% (2012–2022), so every captured litre has a buyer. The same litre that today costs the public (drainage, flooding) becomes income for the collector and funds the education program.
+    </div>
+  </div>
+
+  <!-- FLOW -->
+  <div class="panel" id="flow">
+    <div class="card">
+      <div style="font-weight:700;color:var(--navy);margin-bottom:8px;">Click a step</div>
+      <div class="flow" id="steps"></div>
+      <div class="detail" id="detail"><h3>Select a step above</h3><div>The MVP turns dispersed, untraceable last-mile oil into a single verified, contract-grade supply.</div></div>
+    </div>
+  </div>
+
+  <div class="foot">EcoCycle — illustrative model for pitch use. Last-mile UCO collection · QR + AI traceability · cooperative income + education fund.</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const BRL=n=>"R$"+Math.round(n).toLocaleString("pt-BR");
+const BASE=1111;
+// tabs
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active'); $(t.dataset.p).classList.add('active');
+});
+// calculator
+function calc(){
+  const est=+$('est').value, lper=+$('lper').value, price=+$('price').value,
+        fundPct=+$('fund').value/100, mem=+$('mem').value;
+  $('vEst').textContent=est; $('vL').textContent=lper; $('vP').textContent=price.toFixed(2);
+  $('vF').textContent=(fundPct*100)+'%'; $('vM').textContent=mem;
+  const vol=est*lper, rev=vol*price, fund=rev*fundPct, ops=rev*0.05,
+        pool=rev-fund-ops, perMem=pool/mem;
+  $('oVol').textContent=Math.round(vol).toLocaleString("pt-BR")+" L";
+  $('oRev').textContent=BRL(rev);
+  $('oMem').textContent="+"+BRL(perMem);
+  $('oFund').textContent=BRL(fund);
+  $('oAnnualV').textContent=Math.round(vol*12).toLocaleString("pt-BR");
+  $('oAnnualR').textContent=BRL(rev*12);
+  const total=BASE+perMem, basePct=Math.max(8,Math.min(92,100*BASE/total));
+  $('bBase').style.width=basePct+"%"; $('bAdd').style.width=(100-basePct)+"%";
+  $('cmp').innerHTML="Baseline <b>"+BRL(BASE)+"</b> + EcoCycle <b style='color:var(--forest)'>"+BRL(perMem)+"</b> = <b>"+BRL(total)+"</b>/month ("+Math.round(100*perMem/BASE)+"% uplift)";
+}
+['est','lper','price','fund','mem'].forEach(id=>$(id).addEventListener('input',calc));
+calc();
+// flow
+const STEPS=[
+ ["1","Small establishment","UCO + QR container","Restaurants, bars and vendors store used oil in a sealed, QR-coded container supplied at registration. No buyer exists for them today, so the default is the drain.",""],
+ ["2","Catador cooperative","scheduled pickup + QR scan","A legally recognized cooperative collects on a scheduled route and scans the QR at pickup, logging volume and origin. The collector earns from a stream that currently bypasses them.","income"],
+ ["3","Aggregation hub","verified, contract-grade volume","Pickups are pooled at a residents'-association hub into a verified batch with documented quantity and quality — the precondition for a supply contract.",""],
+ ["4","Processors + return","multiple buyers, revenue split","Sold under contract to several processors (no single-refinery fragility). Revenue splits into catador income (majority) and a fixed share to the Faetequinho education fund.","social"]];
+const sc=$('steps');
+STEPS.forEach((s,i)=>{const d=document.createElement('div');d.className='step';
+  d.innerHTML="<div class='s'>STEP "+s[0]+"</div><div class='t'>"+s[1]+"</div><div class='d'>"+s[2]+"</div>";
+  d.onclick=()=>{document.querySelectorAll('.step').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');
+    const badge=s[4]==='income'?"<span class='badge'>poverty link</span>":s[4]==='social'?"<span class='badge'>social return</span>":"";
+    $('detail').innerHTML="<h3>"+s[1]+badge+"</h3><div>"+s[3]+"</div>";};
+  sc.appendChild(d);
+});
+</script>
+</body>
+</html>
